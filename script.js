@@ -1,5 +1,5 @@
 // ===== Simple config =====
-// Change this to whatever secret you want (tell only Siris!)
+// Change this to whatever secret you want (tell only Siri!)
 const SECRET_PASSWORD = "siri";
 
 // ===== Password gate =====
@@ -260,6 +260,49 @@ if (birthdayBtn) {
         addMessage(msg, "siri");
       }, index * 800);
     });
+  });
+}
+
+// ===== Bottom-right music player (Baiguni) =====
+const musicPlayToggle = document.getElementById("music-play-toggle");
+const musicCard = document.querySelector(".music-player-wrapper .card");
+const birthdayAudio = document.getElementById("birthday-audio");
+
+if (musicPlayToggle && birthdayAudio && musicCard) {
+  let isPlaying = false;
+
+  function playMusic() {
+    birthdayAudio
+      .play()
+      .then(() => {
+        isPlaying = true;
+        musicCard.classList.add("playing");
+        musicPlayToggle.classList.remove("bi-caret-right-fill");
+        musicPlayToggle.classList.add("bi-pause-fill");
+      })
+      .catch(() => {
+        // ignore autoplay / user-gesture errors
+      });
+  }
+
+  function pauseMusic() {
+    birthdayAudio.pause();
+    isPlaying = false;
+    musicCard.classList.remove("playing");
+    musicPlayToggle.classList.remove("bi-pause-fill");
+    musicPlayToggle.classList.add("bi-caret-right-fill");
+  }
+
+  musicPlayToggle.addEventListener("click", () => {
+    if (isPlaying) {
+      pauseMusic();
+    } else {
+      playMusic();
+    }
+  });
+
+  birthdayAudio.addEventListener("ended", () => {
+    pauseMusic();
   });
 }
 
